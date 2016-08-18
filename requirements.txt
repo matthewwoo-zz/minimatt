@@ -3,3 +3,4 @@ beautifulsoup4==4.4.1
 requests==2.8.0
 passlib==1.6.5
 uwsgi
+gunicorn==19.4.5

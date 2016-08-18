@@ -64,7 +64,7 @@ def get_dates(x):
                 {
                     "type": "show_block",
                     "block_name": "Sent",
-                    "title": "Request Sent"
+                    "title": "Book Time"
                 }
             ]
         }

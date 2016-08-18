@@ -1,0 +1,66 @@
+{
+  "attachment": {
+    "type": "template",
+    "payload": {
+      "template_type": "generic",
+      "elements": [
+        {
+          "buttons": [
+            {
+              "url": "https://medium.com/@matthewedanwoo/lessons-from-machine-learning-sleep-to-get-ahead-fbf66b96063d",
+              "type": "web_url",
+              "title": "View Item"
+            }
+          ],
+          "subtitle": "Everyday there are new articles that we need to read on how to be smarter, more productive and make better decisions.",
+          "title": "Lessons from Machine Learning: Sleep to Get Ahead"
+        }
+      ]
+    }
+  }
+}
+
+{
+  'attachment': {
+    'type': 'template',
+    'payload': {
+      'template_type': 'generic',
+      'elements': [
+        {
+          'buttons': [
+            {
+              'url': 'https://petersapparel.parseapp.com/view_item?item_id=100',
+              'type': 'web_url',
+              'title': 'View Item'
+            },
+            {
+              'url': 'https://petersapparel.parseapp.com/buy_item?item_id=100',
+              'type': 'web_url',
+              'title': 'Buy Item'
+            }
+          ],
+          'subtitle': 'Soft white cotton t-shirt is back in style',
+          'image_url': 'http://petersapparel.parseapp.com/img/item100-thumb.png',
+          'title': 'Classic fdsafdsafs T-Shirt'
+        },
+        {
+          'buttons': [
+            {
+              'url': 'https://petersapparel.parseapp.com/view_item?item_id=101',
+              'type': 'web_url',
+              'title': 'View Item'
+            },
+            {
+              'url': 'https://petersapparel.parseapp.com/buy_item?item_id=101',
+              'type': 'web_url',
+              'title': 'Buy Item'
+            }
+          ],
+          'subtitle': 'Soft gray cotton t-shirt is back in style',
+          'image_url': 'http://petersapparel.parseapp.com/img/item101-thumb.png',
+          'title': 'Classic Grey T-Shirt'
+        }
+      ]
+    }
+  }
+}

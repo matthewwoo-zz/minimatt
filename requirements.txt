@@ -4,3 +4,4 @@ requests==2.8.0
 passlib==1.6.5
 uwsgi
 gunicorn==19.4.5
+Unidecode==0.4.19

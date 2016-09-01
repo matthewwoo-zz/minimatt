@@ -41,7 +41,6 @@ def int_list(x):
     integers = sorted(integers, key=int)
     return integers
 
-
 def get_dates(x):
     date_header = {
         "attachment": {
@@ -71,10 +70,5 @@ def get_dates(x):
         date_header['attachment']['payload']['elements'].append(date)
         i += 1
     return date_header
-
-
-
-
-
 
 

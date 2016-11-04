@@ -21,11 +21,14 @@ def times():
     date_list = dates.get_dates(3)
     return flask.jsonify(date_list)
 
-@app.route('/auth', methods=['POST'])
+@app.route('/re_auth', methods=['GET','POST'])
 def auth():
-    if request.method == 'POST':
-        print request
-    return 200
+    if request.method == 'GET':
+        print "Get method"
+        return "<p>Get method executed</p>"
+    elif request.method == 'POST':
+        print "Post method"
+    print "nothing happened"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

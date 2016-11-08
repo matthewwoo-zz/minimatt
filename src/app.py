@@ -21,7 +21,7 @@ def times():
     date_list = dates.get_dates(3)
     return flask.jsonify(date_list)
 
-@app.route('/re_auth', methods=['GET','POST'])
+@app.route('/re_auth/', methods=['GET','POST'])
 def auth():
     if request.method == 'GET':
         print "Get method"

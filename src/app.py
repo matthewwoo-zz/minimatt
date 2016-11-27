@@ -32,6 +32,10 @@ def slots():
         x = Calendar()
         today = x.date_range()
         x.busy_slots(service=service,body=today)
+        # body = x.date_range()
+        # x.busy_slots(body=body,servi=service)
+        slots = x.potential_slot()
+        print slots[1]
         return "200"
 
 

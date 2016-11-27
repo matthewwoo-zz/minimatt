@@ -23,34 +23,47 @@ class Calendar(object):
         personal_dict = eventsResult[u'calendars'][u'matthew.edan.woo@gmail.com']
         work_dict = eventsResult[u'calendars'][u'matt@ujet.co']
 
+        busy_slots = []
+
         for i in personal_dict[u'busy']:
-            print i[u'start']
+            raw_date = i[u'start'][:18]
+            formatted_date = datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S")
+            busy_slots.append(formatted_date)
 
-        # print type(cal_dict)
-        # json.loads(cal_dict)
-        # busy_json = json.loads(cal_dict)
-        # print busy_json
-        return 200
-
-    # medium_json = json.loads(result_content)
-    # posts = medium_json['payload']['references']['Post'].keys()
-    # latest_posts = posts[:x]
-    # posts_content = []
+        for i in work_dict[u'busy']:
+            raw_date = i[u'start'][:18]
+            formatted_date = datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S")
+            busy_slots.append(formatted_date)
+        # print x == datetime.datetime(2016,11,28,5,0,0)
+        return busy_slots
 
     def free_slots(self):
         pass
 
     def potential_slot(self):
-        raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+        raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
 
         if raw_slot_day.weekday() == 5:
-            raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=2)
+            raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=2)
         elif raw_slot_day.weekday() == 6:
-            raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=1)
-        return raw_slot_day
+            raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
 
-    def check_slot(self,slot,slot_list):
-        pass
+        raw_morning_slot = raw_slot_day.replace(hour=9, minute=0, second=0)
+        morning_slot = datetime.datetime.strftime(raw_morning_slot, "%Y-%m-%dT%H:%M:%S")
+
+        raw_evening_slot = raw_slot_day.replace(hour=13, minute=0, second=0)
+        evening_slot = datetime.datetime.strftime(raw_evening_slot, "%Y-%m-%dT%H:%M:%S")
+
+        potential_slots = [morning_slot, evening_slot]
+        return potential_slots
+
+    def check_slot(self, slot, slot_list):
+        for i in slot_list:
+            if i == slot:
+                return True
+            return False
+
+
 
 
 

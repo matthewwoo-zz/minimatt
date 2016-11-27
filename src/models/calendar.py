@@ -1,31 +1,65 @@
 import datetime
+import json
 
 class Calendar(object):
 
     def __init__(self):
         pass
 
-    def get_freebusy(self, service):
-        the_datetime = datetime.datetime.utcnow()
-        the_datetime2 = the_datetime + datetime.timedelta(hours=1)
-        the_datetime1a = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
-        the_datetime2a = the_datetime2.strftime("%Y-%m-%dT%H:%M:%S-08:00")
+    def date_range(self):
+        raw_end = datetime.datetime.utcnow() + datetime.timedelta(days=7)
+        start = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
+        end = raw_end.strftime("%Y-%m-%dT%H:%M:%S-08:00")
 
         body = {
-            "timeMin": the_datetime1a,
-            "timeMax": the_datetime2a,
+            "timeMin": start,
+            "timeMax": end,
             "items": [{"id": "matthew.edan.woo@gmail.com"}, {"id":"matt@ujet.co"}]
         }
+        return body
 
+    def busy_slots(self, body, service):
         eventsResult = service.freebusy().query(body=body).execute()
-        cal_dict = eventsResult[u'calendars']
-        for cal_name in cal_dict:
-            print(cal_name, cal_dict[cal_name])
+        personal_dict = eventsResult[u'calendars'][u'matthew.edan.woo@gmail.com']
+        work_dict = eventsResult[u'calendars'][u'matt@ujet.co']
 
-    def calendar_list(self, service):
-        calendar = service.calendars().get(calendarId='primary').execute()
-        print calendar
-        print calendar['summary']
+        for i in personal_dict[u'busy']:
+            print i[u'start']
+
+        # print type(cal_dict)
+        # json.loads(cal_dict)
+        # busy_json = json.loads(cal_dict)
+        # print busy_json
+        return 200
+
+    # medium_json = json.loads(result_content)
+    # posts = medium_json['payload']['references']['Post'].keys()
+    # latest_posts = posts[:x]
+    # posts_content = []
+
+    def free_slots(self):
+        pass
+
+    def potential_slot(self):
+        raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+
+        if raw_slot_day.weekday() == 5:
+            raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=2)
+        elif raw_slot_day.weekday() == 6:
+            raw_slot_day = raw_slot_day = datetime.datetime.utcnow() + datetime.timedelta(days=1)
+        return raw_slot_day
+
+    def check_slot(self,slot,slot_list):
+        pass
+
+
+
+        # slot = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
+        #
+        #
+        # the_datetime2 = the_datetime + datetime.timedelta(hours=1)
+        # the_datetime1a = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
+
 
 
     def create_event(self, service):

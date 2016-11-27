@@ -30,8 +30,8 @@ def slots():
         service = discovery.build('calendar', 'v3', http_auth)
         calendar2 = service.calendars().get(calendarId='primary').execute()
         x = Calendar()
-        x.get_freebusy(service=service)
-        print calendar2['summary']
+        today = x.date_range()
+        x.busy_slots(service=service,body=today)
         return "200"
 
 

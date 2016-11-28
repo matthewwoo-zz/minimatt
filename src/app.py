@@ -19,7 +19,6 @@ def home():
 
 @app.route('/slots')
 def slots():
-    print request.remote_user
     if 'credentials' not in flask.session:
         return flask.redirect(flask.url_for('oauth2callback'))
     credentials = client.OAuth2Credentials.from_json(flask.session['credentials'])
@@ -60,6 +59,7 @@ def oauth2callback():
 @app.route('/posts', methods=['GET'])
 def posts():
     posts = medium.get_posts(3)
+    print flask.jsonify(posts)
     return flask.jsonify(posts)
 
 

@@ -25,16 +25,18 @@ def get_posts(x):
 def bot_post_json(x, posts_content):
     i = 0
     post_header = {
+                    "messages": [
+                        {
                     "attachment": {
                       "type": "template",
                       "payload": {
                         "template_type": "generic",
-                        "elements": [
-
-                    ]
+                        "elements": []
+                      }
+                    }
                 }
-            }
-       }
+            ]
+    }
     while i < x:
         post = {
                 "title": posts_content[i]['title'],
@@ -47,7 +49,7 @@ def bot_post_json(x, posts_content):
                     }
                 ]
             }
-        post_header['attachment']['payload']['elements'].append(post)
+        post_header['messages'][0]['attachment']['payload']['elements'].append(post)
         i += 1
     return post_header
 

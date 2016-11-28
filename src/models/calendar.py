@@ -64,15 +64,17 @@ class Calendar(object):
 
     def post_dates(self, free_slots):
         date_header = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [
-
-                    ]
+            "messages": [
+                {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "generic",
+                            "elements": []
+                        }
+                    }
                 }
-            }
+            ]
         }
         i = 0
         num_slots = len(free_slots)
@@ -90,7 +92,7 @@ class Calendar(object):
                     }
                 ]
             }
-            date_header['attachment']['payload']['elements'].append(date)
+            date_header['messages'][0]['attachment']['payload']['elements'].append(date)
             i += 1
         return date_header
 

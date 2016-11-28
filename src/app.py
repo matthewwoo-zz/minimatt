@@ -60,8 +60,13 @@ def oauth2callback():
 @app.route('/posts', methods=['GET'])
 def posts():
     posts = medium.get_posts(3)
-    print posts
     return flask.jsonify(posts)
+
+
+@app.route('/test', methods=['GET'])
+def test():
+    x = {"messages": [{"text": "Welcome to our store!"},{"text": "How can I help you?"}]}
+    return flask.jsonify(x)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

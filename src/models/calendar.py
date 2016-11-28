@@ -37,9 +37,6 @@ class Calendar(object):
         # print x == datetime.datetime(2016,11,28,5,0,0)
         return busy_slots
 
-    def free_slots(self):
-        pass
-
     def potential_slot(self):
         raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
 
@@ -60,20 +57,42 @@ class Calendar(object):
     def check_slot(self, slot, slot_list):
         for i in slot_list:
             if i == slot:
+                print i
+                print type(i)
                 return True
             return False
 
+    def post_dates(self, free_slots):
+        date_header = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [
 
-
-
-
-        # slot = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
-        #
-        #
-        # the_datetime2 = the_datetime + datetime.timedelta(hours=1)
-        # the_datetime1a = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S-08:00")
-
-
+                    ]
+                }
+            }
+        }
+        i = 0
+        num_slots = len(free_slots)
+        while i < num_slots:
+            slot = datetime.datetime.strptime(free_slots[i], '%Y-%m-%dT%H:%M:%S')
+            slot = datetime.datetime.strftime(slot,'%A, %B %d - %I:%M %p')
+            print slot
+            date = {
+                "title": slot,
+                "buttons": [
+                    {
+                        "type": "show_block",
+                        "block_name": "Sent",
+                        "title": "Book Time"
+                    }
+                ]
+            }
+            date_header['attachment']['payload']['elements'].append(date)
+            i += 1
+        return date_header
 
     def create_event(self, service):
         event = {

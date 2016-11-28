@@ -12,7 +12,6 @@ app.secret_key = 'super secret key'
 
 SCOPES = 'https://www.googleapis.com/auth/calendar'
 CLIENT_SECRET_FILE = '/Users/mattw/Dropbox/Programming/MiniWooBot/client_secret.json'
-REDIRECT_URI = 'https://e909201b.ngrok.io/re_auth/'
 
 @app.route('/')
 def home():
@@ -20,6 +19,7 @@ def home():
 
 @app.route('/slots')
 def slots():
+    print request.remote_user
     if 'credentials' not in flask.session:
         return flask.redirect(flask.url_for('oauth2callback'))
     credentials = client.OAuth2Credentials.from_json(flask.session['credentials'])
@@ -28,16 +28,19 @@ def slots():
     else:
         http_auth = credentials.authorize(httplib2.Http())
         service = discovery.build('calendar', 'v3', http_auth)
-        calendar2 = service.calendars().get(calendarId='primary').execute()
-        x = Calendar()
-        today = x.date_range()
-        x.busy_slots(service=service,body=today)
-        # body = x.date_range()
-        # x.busy_slots(body=body,servi=service)
-        slots = x.potential_slot()
-        print slots[1]
-        return "200"
-
+        cal = Calendar()
+        today = cal.date_range()
+        busy_slots = cal.busy_slots(service=service, body=today)
+        slots = cal.potential_slot()
+        free_slots = []
+        i = 0
+        while i <= 1:
+            if cal.check_slot(slots[i], busy_slots):
+                i += 1
+            free_slots.append(slots[i])
+            i += 1
+        json_slots = cal.post_dates(free_slots)
+        return flask.jsonify(json_slots)
 
 @app.route('/oauth2callback')
 def oauth2callback():
@@ -54,10 +57,10 @@ def oauth2callback():
         return flask.redirect(flask.url_for('slots'))
 
 
-
 @app.route('/posts', methods=['GET'])
 def posts():
     posts = medium.get_posts(3)
+    print posts
     return flask.jsonify(posts)
 
 if __name__ == '__main__':

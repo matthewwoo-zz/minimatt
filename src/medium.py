@@ -2,6 +2,7 @@ from src.models.posts import Post
 import requests
 import json
 import unidecode
+import random
 
 def get_posts(x):
     result = requests.get('https://medium.com/@matthewedanwoo/latest?format=json')
@@ -15,12 +16,26 @@ def get_posts(x):
         title = medium_json['payload']['references']['Post'][latest_posts[i]]['title']
         title = unidecode.unidecode(title)
         url = medium_json['payload']['references']['Post'][latest_posts[i]]['uniqueSlug']
-        subtitle = medium_json['payload']['references']['Post'][latest_posts[i]]['virtuals']['snippet']
+        subtitle = medium_json['payload']['references']['Post'][latest_posts[i]]['content']['subtitle']
         subtitle = unidecode.unidecode(subtitle)
         reading_time = medium_json['payload']['references']['Post'][latest_posts[i]]['virtuals']['readingTime']
         posts_content.append(Post(title=title, url=url, subtitle=subtitle, reading_time=reading_time).json())
         i -= 1
     return bot_post_json(x,posts_content)
+
+
+def image_gen(x):
+    image_list = [
+        "https://unsplash.it/600/400?image=1056",
+        "https://unsplash.it/600/400?image=1042",
+        "https://unsplash.it/600/400?image=1002",
+        "https://unsplash.it/600/400?image=987",
+        "https://unsplash.it/600/400?image=974",
+        "https://unsplash.it/600/400?image=961",
+    ]
+    return image_list[x]
+
+
 
 def bot_post_json(x, posts_content):
     i = 0
@@ -40,6 +55,7 @@ def bot_post_json(x, posts_content):
     while i < x:
         post = {
                 "title": posts_content[i]['title'],
+                "image_url": image_gen(i),
                 "subtitle": posts_content[i]['subtitle'],
                 "buttons": [
                     {

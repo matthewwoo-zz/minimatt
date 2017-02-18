@@ -89,6 +89,11 @@ class Calendar(object):
                         "type": "show_block",
                         "block_name": "Sent",
                         "title": "Book Time"
+                    },
+                    {
+                        "type": "json_plugin_url",
+                        "url": "http://3d8dc4c5.ngrok.io/newevent",
+                        "title": "Create Event"
                     }
                 ]
             }
@@ -102,11 +107,11 @@ class Calendar(object):
             'location': '800 Howard St., San Francisco, CA 94103',
             'description': 'A chance to hear more about Google\'s developer products.',
             'start': {
-                'dateTime': '2016-11-30T09:00:00-08:00',
+                'dateTime': '2017-03-26T09:00:00-08:00',
                 'timeZone': 'America/Los_Angeles',
             },
             'end': {
-                'dateTime': '2016-11-30T17:00:00-08:00',
+                'dateTime': '2017-03-27T17:00:00-08:00',
                 'timeZone': 'America/Los_Angeles',
             },
             'attendees': [

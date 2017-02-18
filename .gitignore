@@ -1,4 +1,4 @@
 requirements.txt
 src/creds.py
-client_secret.json
+src/client_secret.json
 src/credsdraft.py

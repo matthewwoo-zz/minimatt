@@ -5,6 +5,7 @@ import flask
 from flask import Flask, request
 from src import medium
 from src.models.calendar import Calendar
+from src.get_creds import get_credentials
 import json
 
 app = Flask(__name__)
@@ -35,10 +36,7 @@ def login():
 
 @app.route('/slots')
 def slots():
-    credentials = client.AccessTokenCredentials('ya29.GlvgAyARY23-wOXykO9QmM7cZl3ZvTW7flyMUmZM3gIhhtnc8kbCWlWmuMqYyxAytyuorGNN3ZXM6w-6d01UEl-gt5G3iEpfNr7T8paVp41u8_WPtM3p1W3gG8Nm',
-                                                'my-user-agent/1.0')
-    print "credentials value assigned"
-    print credentials
+    credentials = get_credentials()
     http_auth = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http_auth)
     cal = Calendar()
@@ -54,21 +52,6 @@ def slots():
         i += 1
     json_slots = cal.post_dates(free_slots)
     return flask.jsonify(json_slots)
-
-# @app.route('/oauth2callback')
-# def oauth2callback():
-#     flow = client.flow_from_clientsecrets(CLIENT_SECRET_FILE,
-#         scope=SCOPES,
-#         redirect_uri=flask.url_for('oauth2callback', _external=True))
-#     if 'code' not in flask.request.args:
-#         auth_uri = flow.step1_get_authorize_url()
-#         return flask.redirect(auth_uri)
-#     else:
-#         auth_code = flask.request.args.get('code')
-#         credentials = flow.step2_exchange(auth_code)
-#         flask.session['credentials'] = credentials.to_json()
-#         return flask.redirect(flask.url_for('slots'))
-
 
 @app.route('/posts', methods=['GET'])
 def posts():

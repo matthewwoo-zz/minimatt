@@ -23,15 +23,16 @@ def slots():
     cal = Calendar()
     today = cal.date_range()
     busy_slots = cal.busy_slots(service=service, body=today)
-    slots = cal.potential_slot()
+    slots = cal.potential_slot(5)
     free_slots = []
     i = 0
-    while i <= 1:
+    while i <= 7:
         if cal.check_slot(slots[i], busy_slots):
             i += 1
         free_slots.append(slots[i])
         i += 1
     json_slots = cal.post_dates(free_slots)
+    print json_slots
     return flask.jsonify(json_slots)
 
 @app.route('/newevent')

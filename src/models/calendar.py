@@ -34,31 +34,33 @@ class Calendar(object):
             raw_date = i[u'start'][:18]
             formatted_date = datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S")
             busy_slots.append(formatted_date)
-        # print x == datetime.datetime(2016,11,28,5,0,0)
+
         return busy_slots
 
-    def potential_slot(self):
-        raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
+    def potential_slot(self,x):
+        potential_slots = []
+        i = 0
+        while i < x:
+            raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=i)
 
-        if raw_slot_day.weekday() == 5:
-            raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=2)
-        elif raw_slot_day.weekday() == 6:
-            raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
+            if raw_slot_day.weekday() == 5:
+                raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=2)
+            elif raw_slot_day.weekday() == 6:
+                raw_slot_day = datetime.datetime.now() + datetime.timedelta(days=1)
 
-        raw_morning_slot = raw_slot_day.replace(hour=9, minute=0, second=0)
-        morning_slot = datetime.datetime.strftime(raw_morning_slot, "%Y-%m-%dT%H:%M:%S")
+            raw_morning_slot = raw_slot_day.replace(hour=9, minute=0, second=0)
+            morning_slot = datetime.datetime.strftime(raw_morning_slot, "%Y-%m-%dT%H:%M:%S")
 
-        raw_evening_slot = raw_slot_day.replace(hour=13, minute=0, second=0)
-        evening_slot = datetime.datetime.strftime(raw_evening_slot, "%Y-%m-%dT%H:%M:%S")
+            raw_evening_slot = raw_slot_day.replace(hour=13, minute=0, second=0)
+            evening_slot = datetime.datetime.strftime(raw_evening_slot, "%Y-%m-%dT%H:%M:%S")
 
-        potential_slots = [morning_slot, evening_slot]
-        return potential_slots
+            potential_slots.extend([morning_slot,evening_slot])
+            i += 1
+        return potential_slots[2:]
 
     def check_slot(self, slot, slot_list):
         for i in slot_list:
             if i == slot:
-                print i
-                print type(i)
                 return True
             return False
 

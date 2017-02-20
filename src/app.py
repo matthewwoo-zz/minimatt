@@ -1,4 +1,6 @@
 import httplib2
+import requests
+from flask import request
 from googleapiclient import discovery
 import flask
 from flask import Flask
@@ -15,7 +17,7 @@ def home():
     print "request going through"
     return "<p>Running</p>"
 
-@app.route('/slots')
+@app.route('/slots', methods=['GET'])
 def slots():
     credentials = get_credentials()
     http_auth = credentials.authorize(httplib2.Http())
@@ -35,6 +37,28 @@ def slots():
     print json_slots
     return flask.jsonify(json_slots)
 
+
+@app.route('/meeting', methods=['GET', 'POST'])
+def meeting():
+    if request.method == 'POST':
+        r = request.form
+        name = r['fullName']
+        topic = r['topic']
+        email = r['email']
+        setattr(flask.g,'fullName', name)
+        print getattr(flask.g, 'fullName')
+        print r
+    if request.method == 'GET':
+        pass
+    return 200
+
+# @app.route('/meetingdetails', methods=['POST'])
+# def meetingdetails():
+#     x = getattr(flask.g, 'fullName')
+#     print x
+#     return 200
+
+
 @app.route('/newevent')
 def event():
     credentials = get_credentials()
@@ -45,11 +69,8 @@ def event():
     return 200
 
 
-
-
 @app.route('/posts', methods=['GET'])
 def posts():
-    print "what's up"
     posts = medium.get_posts(5)
     print flask.jsonify(posts)
     return flask.jsonify(posts)

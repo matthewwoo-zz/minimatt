@@ -81,6 +81,7 @@ class Calendar(object):
         i = 0
         num_slots = len(free_slots)
         while i < num_slots:
+            cal_slot = free_slots[i]
             slot = datetime.datetime.strptime(free_slots[i], '%Y-%m-%dT%H:%M:%S')
             slot = datetime.datetime.strftime(slot,'%A, %B %d - %I:%M %p')
             print slot

@@ -98,22 +98,24 @@ class Calendar(object):
             i += 1
         return date_header
 
-    def create_event(self, service):
+    def create_event(self, service, name, topic, email, start):
+        start_time = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S")
+        end_time = start_time + datetime.timedelta(hours=1)
         event = {
-            'summary': 'Google I/O 2015',
-            'location': '800 Howard St., San Francisco, CA 94103',
-            'description': 'A chance to hear more about Google\'s developer products.',
+            'summary': "Chat: %s <> Matt" % name,
+            'location': 'Google Hangout',
+            'description': 'Chat about %s' % topic,
             'start': {
-                'dateTime': '2017-03-26T09:00:00-08:00',
+                'dateTime': start_time,
                 'timeZone': 'America/Los_Angeles',
             },
             'end': {
-                'dateTime': '2017-03-27T17:00:00-08:00',
+                'dateTime': end_time,
                 'timeZone': 'America/Los_Angeles',
             },
             'attendees': [
                 {'email': 'matthew.edan.woo@gmail.com'},
-                {'email': 'matt@ujet.co', 'responseStatus':'accepted'}
+                {'email': email}
             ],
             'reminders': {
                 'useDefault': True

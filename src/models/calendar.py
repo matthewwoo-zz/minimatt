@@ -82,21 +82,15 @@ class Calendar(object):
         num_slots = len(free_slots)
         while i < num_slots:
             cal_slot = free_slots[i]
-            slot = datetime.datetime.strptime(free_slots[i], '%Y-%m-%dT%H:%M:%S')
-            slot = datetime.datetime.strftime(slot,'%A, %B %d - %I:%M %p')
-            print slot
+            raw_slot = datetime.datetime.strptime(free_slots[i], '%Y-%m-%dT%H:%M:%S')
+            slot = datetime.datetime.strftime(raw_slot,'%A, %B %d - %I:%M %p')
             date = {
                 "title": slot,
                 "buttons": [
                     {
-                        "type": "show_block",
-                        "block_name": "Sent",
-                        "title": "Book Time"
-                    },
-                    {
                         "type": "json_plugin_url",
-                        "url": "http://3d8dc4c5.ngrok.io/newevent",
-                        "title": "Create Event"
+                        "url": "http://ab365d25.ngrok.io/newevent/%s" % cal_slot,
+                        "title": "Book Time"
                     }
                 ]
             }

@@ -1,6 +1,7 @@
 import httplib2
 import requests
 from flask import request
+from flask import session
 from googleapiclient import discovery
 import flask
 from flask import Flask
@@ -38,34 +39,35 @@ def slots():
     return flask.jsonify(json_slots)
 
 
-@app.route('/meeting', methods=['GET', 'POST'])
+@app.route('/meeting', methods=['POST'])
 def meeting():
-    if request.method == 'POST':
-        r = request.form
-        name = r['fullName']
-        topic = r['topic']
-        email = r['email']
-        setattr(flask.g,'fullName', name)
-        print getattr(flask.g, 'fullName')
-        print r
-    if request.method == 'GET':
-        pass
-    return 200
-
-# @app.route('/meetingdetails', methods=['POST'])
-# def meetingdetails():
-#     x = getattr(flask.g, 'fullName')
-#     print x
-#     return 200
+    print "route working"
+    r = request.form
+    session['name'] = r['fullName']
+    session['topic'] = r['topic']
+    session['email'] = r['email']
+    return "200"
 
 
-@app.route('/newevent')
-def event():
-    credentials = get_credentials()
-    http_auth = credentials.authorize(httplib2.Http())
-    service = discovery.build('calendar', 'v3', http_auth)
-    cal = Calendar()
-    cal.create_event(service=service)
+@app.route('/newevent/<date>')
+def event(date):
+    print "route working"
+    print date
+    # print date
+    return "200"
+#
+# @app.route('/newevent')
+# def event():
+#     print "route working"
+#     return "200"
+
+
+
+    # credentials = get_credentials()
+    # http_auth = credentials.authorize(httplib2.Http())
+    # service = discovery.build('calendar', 'v3', http_auth)
+    # cal = Calendar()
+    # cal.create_event(service=service,)
     return 200
 
 

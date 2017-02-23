@@ -17,7 +17,8 @@ class Calendar(object):
         body = {
             "timeMin": start,
             "timeMax": end,
-            "items": [{"id": "matthew.edan.woo@gmail.com"}, {"id":"matt@ujet.co"}]
+            "items": [{"id": "matthew.edan.woo@gmail.com"}, {"id":"matt@ujet.co"}],
+            "timeZone": "America/Los_Angeles"
         }
         return body
 
@@ -37,6 +38,11 @@ class Calendar(object):
             raw_date = i[u'start'][:18]
             formatted_date = datetime.datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S")
             busy_slots.append(formatted_date)
+
+        i = 0
+        while i < len(busy_slots):
+            busy_slots[i] = datetime.datetime.strftime(busy_slots[i],"%Y-%m-%dT%H:%M:%S")
+            i += 1
 
         return busy_slots
 
@@ -59,13 +65,18 @@ class Calendar(object):
 
             potential_slots.extend([morning_slot,evening_slot])
             i += 1
-        return potential_slots[2:]
+        return potential_slots[1:]
 
-    def check_slot(self, slot, slot_list):
-        for i in slot_list:
-            if i == slot:
-                return True
-            return False
+    def check_slot(self, potential_slots, busy_slots):
+        i = 0
+        free_slots = []
+        while i < len(potential_slots):
+            if potential_slots[i] in busy_slots:
+                i += 1
+            else:
+                free_slots.append(potential_slots[i])
+                i += 1
+        return free_slots
 
     def post_dates(self, free_slots):
         date_header = {
@@ -92,7 +103,7 @@ class Calendar(object):
                 "buttons": [
                     {
                         "type": "json_plugin_url",
-                        "url": "http://b9b1ecd0.ngrok.io/newevent/%s" % cal_slot,
+                        "url": "http://f6e0d228.ngrok.io/newevent/%s" % cal_slot,
                         "title": "Book Time"
                     }
                 ]
@@ -131,3 +142,31 @@ class Calendar(object):
 
         event = service.events().insert(calendarId='primary', body=event).execute()
         print 'Event created: %s' % (event.get('htmlLink'))
+
+    def event_sent(self):
+        message = {
+            "messages": [
+                {
+                    "attachment": {
+                        "type": "template",
+                        "payload": {
+                            "template_type": "button",
+                            "text": "I've gone ahead and sent you a meeting invite, want to read more of his posts or are you on your way?",
+                            "buttons": [
+                                {
+                                    "type": "show_block",
+                                    "block_name": "Recent Posts",
+                                    "title": "Read Posts"
+                                },
+                                {
+                                    "type": "show_block",
+                                    "block_name": "Bye",
+                                    "title": "Bye"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+        return message

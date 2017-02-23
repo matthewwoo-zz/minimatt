@@ -29,16 +29,9 @@ def slots():
     cal = Calendar()
     today = cal.date_range()
     busy_slots = cal.busy_slots(service=service, body=today)
-    slots = cal.potential_slot(5)
-    free_slots = []
-    i = 0
-    while i <= 7:
-        if cal.check_slot(slots[i], busy_slots):
-            i += 1
-        free_slots.append(slots[i])
-        i += 1
+    potential_slots = cal.potential_slot(10)
+    free_slots = cal.check_slot(potential_slots=potential_slots, busy_slots=busy_slots)
     json_slots = cal.post_dates(free_slots)
-    print json_slots
     return flask.jsonify(json_slots)
 
 
@@ -64,13 +57,12 @@ def event(date):
     topic = session['topic']
     email = session['email']
     cal.create_event(service=service, name=name, topic=topic, email=email)
-    return "200"
+    return flask.jsonify(cal.event_sent())
 
 
 @app.route('/posts', methods=['GET'])
 def posts():
     posts = medium.get_posts(5)
-    print flask.jsonify(posts)
     return flask.jsonify(posts)
 
 

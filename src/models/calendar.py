@@ -1,6 +1,9 @@
 import datetime
 import json
 
+from flask import session
+
+
 class Calendar(object):
 
     def __init__(self):
@@ -89,7 +92,7 @@ class Calendar(object):
                 "buttons": [
                     {
                         "type": "json_plugin_url",
-                        "url": "http://ab365d25.ngrok.io/newevent/%s" % cal_slot,
+                        "url": "http://b9b1ecd0.ngrok.io/newevent/%s" % cal_slot,
                         "title": "Book Time"
                     }
                 ]
@@ -98,19 +101,23 @@ class Calendar(object):
             i += 1
         return date_header
 
-    def create_event(self, service, name, topic, email, start):
+    def create_event(self, service, name, topic, email):
+        start = session['date']
+        start = start.strip('"')
         start_time = datetime.datetime.strptime(start, "%Y-%m-%dT%H:%M:%S")
         end_time = start_time + datetime.timedelta(hours=1)
+        f_start_time = datetime.datetime.strftime(start_time,"%Y-%m-%dT%H:%M:%S")
+        f_end_time = datetime.datetime.strftime(end_time, "%Y-%m-%dT%H:%M:%S")
         event = {
             'summary': "Chat: %s <> Matt" % name,
             'location': 'Google Hangout',
             'description': 'Chat about %s' % topic,
             'start': {
-                'dateTime': start_time,
+                'dateTime': f_start_time,
                 'timeZone': 'America/Los_Angeles',
             },
             'end': {
-                'dateTime': end_time,
+                'dateTime': f_end_time,
                 'timeZone': 'America/Los_Angeles',
             },
             'attendees': [

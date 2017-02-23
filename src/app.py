@@ -1,3 +1,6 @@
+import datetime
+import json
+
 import httplib2
 import requests
 from flask import request
@@ -51,24 +54,17 @@ def meeting():
 
 @app.route('/newevent/<date>')
 def event(date):
-    print "route working"
-    print date
-    # print date
+    credentials = get_credentials()
+    http_auth = credentials.authorize(httplib2.Http())
+    service = discovery.build('calendar', 'v3', http_auth)
+    cal = Calendar()
+    f_date = json.dumps(date)
+    session['date'] = f_date
+    name = session['name']
+    topic = session['topic']
+    email = session['email']
+    cal.create_event(service=service, name=name, topic=topic, email=email)
     return "200"
-#
-# @app.route('/newevent')
-# def event():
-#     print "route working"
-#     return "200"
-
-
-
-    # credentials = get_credentials()
-    # http_auth = credentials.authorize(httplib2.Http())
-    # service = discovery.build('calendar', 'v3', http_auth)
-    # cal = Calendar()
-    # cal.create_event(service=service,)
-    return 200
 
 
 @app.route('/posts', methods=['GET'])
@@ -84,4 +80,4 @@ def test():
     return flask.jsonify(x)
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
